@@ -62,7 +62,7 @@ alias timer='while true; do date; sleep 1; done;'
 
 alias a='alias | ack '
 
-export PATH=~/bin:$PATH
+export PATH=~/.bin:$PATH
 
 export GOPATH=$HOME/Projects/Gopath
 export PATH="$GOPATH/bin:$PATH"
@@ -96,8 +96,10 @@ alias localip='ifconfig en0 | grep inet | grep -v inet6'
     }
 
 
-source ~/.make_github_pull_request_completion.sh
+source ~/.scripts/.make_github_pull_request_completion.sh
+# Install as a bin from scripts: cd .scripts; install make_github_pull_request.sh ~/.bin/make_github_pull_request
 alias pr=make_github_pull_request
+
 
 finder_clear_recents() {
 	defaults delete com.apple.finder GoToField
