@@ -34,16 +34,32 @@ quitModal:bind('', 'escape', function() quitModal:exit() end)
 -- The Perfect Window Size
 
 local function setThePerfectWindowSize()
-  hs.alert.show('The Perfect Window Size')
   win = hs.window.frontmostWindow()
   if win == nil then return end
 
   local f = win:frame()
+
+  if f.x == 621 and f.y == 259 then
+    setThePerfectWindowSizeX2(f)
+    return
+  end
+
+  hs.alert.show('The Perfect Window Size')
   
   f.x = 621
   f.y = 259
   f.w = 1324
   f.h = 942
+  win:setFrame(f)
+end
+
+function setThePerfectWindowSizeX2(f)
+  hs.alert.show('The Perfect Window, But Bigger!')
+
+  f.x = 310
+  f.y = 129
+  f.w = 1986
+  f.h = 1178
   win:setFrame(f)
 end
 
@@ -104,7 +120,7 @@ hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Down', setThePerfectWindowSize)
 local menubar = require('menubar')
 menubar.init()
 
-if file_exists("twm.lua") then
-  local twm = require('twm')
-  twm.init()
-end
+-- if file_exists("twm.lua") then
+--   local twm = require('twm')
+--   twm.init()
+-- end
