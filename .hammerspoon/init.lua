@@ -1,4 +1,6 @@
 
+local logger = hs.logger.new('init', 'debug')
+
 function file_exists(name)
   local f = io.open(name, "r")
   if f ~= nil then
@@ -31,6 +33,30 @@ quitModal:bind('', 'escape', function() quitModal:exit() end)
 -- END Press Cmd+Q
 
 
+-- Copy timestamp
+
+local datestampKeyModal = hs.hotkey.modal.new('', 'f9')
+
+function datestampKeyModal:entered()
+  local t = os.date("%Y-%m-%d")
+  hs.pasteboard.setContents(t)
+  hs.alert.show("Timestamp copied - " .. t)
+  hs.timer.doAfter(1, function() datestampKeyModal:exit() end)
+end
+
+
+local datestampKeyModal = hs.hotkey.modal.new('shift', 'f9')
+
+function datestampKeyModal:entered()
+  local t = os.date("%Y-%m-%d %H:%M:%S")
+  hs.pasteboard.setContents(t)
+  hs.alert.show("Timestamp copied - " .. t)
+  hs.timer.doAfter(1, function() datestampKeyModal:exit() end)
+end
+
+-- END Copy timestamp
+
+
 -- The Perfect Window Size
 
 local function setThePerfectWindowSize()
@@ -38,6 +64,13 @@ local function setThePerfectWindowSize()
   if win == nil then return end
 
   local f = win:frame()
+
+  local screen = hs.screen'Lg'
+
+  if screen == nil then
+    hs.alert.show('Teeny Tiny Screen')
+    return
+  end
 
   if f.x == 621 and f.y == 259 then
     setThePerfectWindowSizeX2(f)
@@ -64,7 +97,7 @@ function setThePerfectWindowSizeX2(f)
 end
 
 
-hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'w', setThePerfectWindowSize)
+-- hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'w', setThePerfectWindowSize)
 
 
 -- END The Perfect Window Size
@@ -109,10 +142,10 @@ local function setSplitWindowUp()
   setSplitWindow('up')
 end
 
-hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Left', setSplitWindowLeft)
-hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Right', setSplitWindowRight)
-hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Up', setSplitWindowUp)
-hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Down', setThePerfectWindowSize)
+-- hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Left', setSplitWindowLeft)
+-- hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Right', setSplitWindowRight)
+-- hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Up', setSplitWindowUp)
+-- hs.hotkey.bind({'cmd', 'ctrl', 'alt'}, 'Down', setThePerfectWindowSize)
 
 
 -- END Set Split Window
@@ -124,3 +157,19 @@ menubar.init()
 --   local twm = require('twm')
 --   twm.init()
 -- end
+
+-- Screenshot curent window and save to desktop
+
+-- local screenshotModal = hs.hotkey.modal.new('', 'f12')
+
+-- function screenshotModal:entered()
+--   local t = os.date("%Y-%m-%d %H-%M-%S")
+--   hs.window.focusedWindow():snapshot():saveToFile(os.getenv("HOME") .. "/Desktop/" .. t .. ".png")
+--   hs.alert.show("Saved")
+--   hs.timer.doAfter(1, function() screenshotModal:exit() end)
+-- end
+
+
+hs.hotkey.bind({}, 'f12', function() 
+  hs.eventtap.keyStroke({"cmd", "shift"}, '3')
+end)
